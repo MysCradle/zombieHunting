@@ -30,6 +30,7 @@ export class Collision extends GameObject {
 
     update(delta: number): void {
         if (this.destroyed) return
+        
     }
 
     fixedUpdate(delta: number): void {
@@ -39,6 +40,6 @@ export class Collision extends GameObject {
     destroy(): void {
         if (this.destroyed) return;
         this.destroyed = true;
-
+        //
     }
 }

@@ -8,8 +8,8 @@ import { assetManager } from "@framekore/asset-manager";
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement
 
-canvas.width = 500
-canvas.height = 500
+canvas.width = 400
+canvas.height = 400
 
 const engine = new Engine()
     .use(inputPlugin())

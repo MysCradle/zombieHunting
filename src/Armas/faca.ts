@@ -1,7 +1,7 @@
 import { type Engine } from "@framekore/core";
 import { Arma } from "../Objects/Arma";
 import { RenderManager2D, Sprite2D, Texture } from "@framekore/render2d";
-import faca from '../assets/faca.png'
+import faca from '../assets/images/faca.png'
 import { AssetManager } from "@framekore/asset-manager";
 import type { CollisionOptions } from "../Objects/Collision";
 import type { Player } from "../Objects/Player";
@@ -73,6 +73,7 @@ export class Faca extends Arma {
             if (this.input.isJustDown(controls.get)) {
                 this.state = "abandoned"
                 this.target = undefined
+                return
             }
             
 

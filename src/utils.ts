@@ -1,4 +1,6 @@
 import { GameObject } from "@framekore/core"
+import { Vector2 } from "@framekore/math"
+import type { Entity } from "./Objects/Entity"
 
 export class Alarm extends GameObject {
     alarm = -1
@@ -35,4 +37,26 @@ export function randomNumber(x: number, y: number): number {
 export function choose<T>(...options: T[]): T {
     const randomIndex = Math.floor(Math.random() * options.length);
     return options[randomIndex];
+}
+
+export function knockback(
+    target: Entity,
+    origin: Entity,
+    force: number
+) {
+    const direction = Vector2.sub(
+        target.transform.position,
+        origin.transform.position
+    ).normalize()
+
+    target.body.applyForce(
+        direction.x * force,
+        direction.y * force
+    )
+}
+
+export function resetFont(ctx: CanvasRenderingContext2D) {
+    ctx.fillStyle = 'black'
+    ctx.strokeStyle = 'black'
+    ctx.font = "16px arial"
 }

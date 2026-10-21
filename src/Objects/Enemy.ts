@@ -1,16 +1,16 @@
-import { CollisionLayer, RigidBody2D } from "@framekore/physics2d";
-import { Collision, type CollisionOptions } from "./Collision";
+import { CollisionLayer } from "@framekore/physics2d";
+import { type CollisionOptions } from "./Collision";
 import { Engine } from "@framekore/core";
 import { AssetManager } from '@framekore/asset-manager'
-import zombie from "../assets/zombie.png"
+import zombie from "../assets/images/zombie.png"
 import { AnimatedSprite2D, Animator2D, Texture, type Renderable } from "@framekore/render2d";
 import { InputManager } from "@framekore/input-manager";
 import { Vector2 } from "@framekore/math";
 import type { Player } from "./Player";
-import { Alarm } from "../utils";
+import { Alarm, knockback } from "../utils";
+import { Entity } from "./Entity";
 
-export class Enemy extends Collision implements Renderable {
-    body: RigidBody2D
+export class Enemy extends Entity implements Renderable {
     assets: AssetManager
     animator: Animator2D
 
@@ -19,6 +19,7 @@ export class Enemy extends Collision implements Renderable {
     target?: Player
 
     alarm0: Alarm
+    alarm1: Alarm
 
     hittable = true
 
@@ -43,8 +44,7 @@ export class Enemy extends Collision implements Renderable {
         console.log('neh');
 
         this.alarm0 = new Alarm(engine)
-
-        this.body = new RigidBody2D(this)
+        this.alarm1 = new Alarm(engine)
         this.assets = AssetManager.get(engine)
         this.animator = new Animator2D(engine)
         this.input = InputManager.get(engine)
@@ -73,22 +73,27 @@ export class Enemy extends Collision implements Renderable {
 
         this.transform.scale.x = 1
         this.transform.scale.y = 1
-
         this.collision.layer = CollisionLayer.Layer2
         this.collision.mask = CollisionLayer.Layer1
     }
 
-    hit(frames: number) {
-        this.hittable = false
-        this.alarm0.setAlarm(frames, () => {
-            this.hittable = true
-        })
-    }
+    hit(frames: number, other: Entity, force: number) {
+            this.hittable = false
+            knockback(this, other, force)
+            this.alarm0.setAlarm(frames, () => {
+                this.hittable = true
+            })
+            this.alarm1.setAlarm(10, () => {
+                this.body.velocity.x=0
+                this.body.velocity.y=0
+            })
+        }
 
     fixedUpdate(delta: number): void {
         if (this.destroyed) return
         super.fixedUpdate?.(delta)
         this.alarm0.fixedUpdate(delta)
+        this.alarm1.fixedUpdate(delta)
 
         if (!this.target)
             return
@@ -105,6 +110,8 @@ export class Enemy extends Collision implements Renderable {
     update(delta: number): void {
         super.update?.(delta)
 
+        this.animator.zIndex = this.transform.position.y
+
         if (this.hp <= 0) {
             this.destroy();
             this.collision.mask = 0;
@@ -114,7 +121,7 @@ export class Enemy extends Collision implements Renderable {
     }
 
     render(ctx: CanvasRenderingContext2D): void {
-        this.animator.render(ctx)
+        
     }
 
     destroy(): void {

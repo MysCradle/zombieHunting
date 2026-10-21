@@ -2,8 +2,9 @@ import { Engine } from "@framekore/core";
 import { Animator2D, type Renderable } from "@framekore/render2d";
 import { Collision, type CollisionOptions } from "./Collision";
 import type { Player } from "./Player";
+import { Entity } from "./Entity";
 
-export class Arma extends Collision implements Renderable {
+export class Arma extends Entity implements Renderable {
     target?: Player
     animator: Animator2D
 
@@ -13,6 +14,7 @@ export class Arma extends Collision implements Renderable {
         this.target = target
         this.animator = new Animator2D(engine)
         this.collision.isTrigger = true
+        this.body.useGravity = false
     }
 
     render(ctx: CanvasRenderingContext2D): void {

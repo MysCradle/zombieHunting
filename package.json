@@ -13,12 +13,12 @@
     "vite": "^8.2.2"
   },
   "dependencies": {
-    "@framekore/asset-manager": "2.0.0",
-    "@framekore/core": "2.0.0",
-    "@framekore/input-manager": "2.0.0",
-    "@framekore/math": "^0.0.11",
-    "@framekore/physics2d": "2.0.0",
-    "@framekore/render2d": "2.0.1",
-    "@framekore/transform2d": "2.0.0"
+    "@framekore/asset-manager": "2.0.1",
+    "@framekore/core": "2.0.1",
+    "@framekore/input-manager": "2.0.1",
+    "@framekore/math": "^0.0.12",
+    "@framekore/physics2d": "2.0.1",
+    "@framekore/render2d": "2.1.1",
+    "@framekore/transform2d": "2.0.1"
   }
 }
